@@ -1,13 +1,12 @@
 package org.example.datetime;
 
-import javax.management.Query;
-import java.text.SimpleDateFormat;
 import java.time.*;
 import java.time.format.DateTimeFormatter;
 import java.time.format.FormatStyle;
+import java.time.temporal.ChronoField;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.Temporal;
 import java.time.temporal.TemporalAccessor;
-import java.time.temporal.TemporalField;
-import java.util.Queue;
 
 public class DateTest {
 
@@ -24,9 +23,27 @@ public class DateTest {
 
         //Работа с периодами
         //Важно, что Period содержит не абсолютное значение, но значение, которое может быть, как больше, так и меньше нуля (в зависимости от даты)
-        Period period = Period.between(localDate, localDateEnd); // year = 0, month = 0, day = 6
-        Period period2 = Period.between(localDateEnd, localDate); // year = 0, month = 0, day = -6 (!)
+        Period periodForScalar = Period.of(1000, 11, 350);
+        Period period = Period.between(localDate, localDateEnd); // year = 0, month = 0, day = 6  || P6D
+        Period period2 = Period.between(localDateEnd, localDate); // year = 0, month = 0, day = -6 (!) || P-6D
+        Period periodOf = Period.ofYears(2020); //P2020Y
+        Period periodFrom = Period.from(period);
+        long periodDays = period.get(ChronoUnit.DAYS);
+        Period periodScalar = period.multipliedBy(100);
+        Period periodScalarNorm = periodScalar.normalized(); //Без изменений. Дни в нормализации не участвуют
+        Period periodScalar2 = periodForScalar.multipliedBy(10);//P10000Y110M3500D
+        Period periodScalar2Norm = periodScalar2.normalized(); //P10009Y2M3500D
+        Temporal temporal = period2.addTo(localDateEnd); // 2022-12-19 (-6 дней)
 
+        Duration duration = Duration.between(localDateTime, LocalDateTime.of(2022, 11, 11, 11, 11, 11));
+        Long durationDifInMins = duration.plus(Duration.ofDays(405)).toMinutes();
+
+        //Year year = Year.of(2007);
+
+        //TemporalAccessor check
+        Object o = new Object();
+        LocalDateTime tf = LocalDateTime.of(2022,1,1,1,1);
+        localDateTime.isSupported(ChronoField.ERA);
 
         DateTimeFormatter dateTimeFormatterISO_LOCAL_DATE_TIME = DateTimeFormatter.ISO_LOCAL_DATE_TIME;
         DateTimeFormatter dateTimeFormatterISO_LOCAL_DATE = DateTimeFormatter.ISO_LOCAL_DATE;
