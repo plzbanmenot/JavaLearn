@@ -1,5 +1,5 @@
 package JavaLearn.interfaces;
 
-public interface FunctionalInterfaceTest extends FunctionalInterface {
+public interface FunctionalInterfaceTest {
 
 }
